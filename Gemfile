@@ -16,3 +16,8 @@ group :test do
   gem 'sqlite3', '~> 1.3.6'
   gem 'test-unit'
 end
+
+group :development do
+  gem 'rubocop-performance'
+  gem 'rubocop-rails'
+end
