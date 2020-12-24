@@ -209,7 +209,7 @@ class VersionedTest < ActiveSupport::TestCase
       p.save
       assert_equal "title#{i}", p.title
       assert_equal (i + 4), p.lock_version
-      assert p.versions(true).size <= 2, 'locked version can only store 2 versions'
+      assert p.versions.reload.size <= 2, 'locked version can only store 2 versions'
     end
   end
 
@@ -222,25 +222,25 @@ class VersionedTest < ActiveSupport::TestCase
   def test_track_altered_attributes
     p = LockedPage.create! title: 'title'
     assert_equal 1, p.lock_version
-    assert_equal 1, p.versions(true).size
+    assert_equal 1, p.versions.reload.size
 
     p.body = 'whoa'
     assert_not p.save_version?
     p.save
     assert_equal 2, p.lock_version # still increments version because of optimistic locking
-    assert_equal 1, p.versions(true).size
+    assert_equal 1, p.versions.reload.size
 
     p.title = 'updated title'
     assert p.save_version?
     p.save
     assert_equal 3, p.lock_version
-    assert_equal 1, p.versions(true).size # version 1 deleted
+    assert_equal 1, p.versions.reload.size # version 1 deleted
 
     p.title = 'updated title!'
     assert p.save_version?
     p.save
     assert_equal 4, p.lock_version
-    assert_equal 2, p.versions(true).size # version 1 deleted
+    assert_equal 2, p.versions.reload.size # version 1 deleted
   end
 
   def test_find_versions
