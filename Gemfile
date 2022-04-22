@@ -9,7 +9,7 @@ group :development do
     gem 'pry'
   end
 
-  gem 'rails', '~>5.0.6'
+  gem 'rails', '~>6.1.5'
 end
 
 group :test do
